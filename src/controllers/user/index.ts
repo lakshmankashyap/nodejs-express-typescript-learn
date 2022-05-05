@@ -30,7 +30,10 @@ const userController = {
   },
   async loggedUser(req, res) {
     try {
-      const user: any = await User.findById(req.user._id)
+      const user: any = await User.findOne(req.body)
+      await User.generateAuthToken()
+      await user.save()
+      
       res.status(200).json({ status: 'success', data: user })
     } catch (error) {
       res.status(400).json({
@@ -43,11 +46,8 @@ const userController = {
   async create(req, res) {
     try {
       const user: any = await User.create(req.body)
-      await user.generateAuthToken()
-
       await user.save()
-
-      res.status(200).json({ status: 'success', message: 'User created', data: { token: user.token } })
+      res.status(200).json({ status: 'success', message: 'User created' })
     } catch (error) {
       res.status(400).json({
         status: 'error',

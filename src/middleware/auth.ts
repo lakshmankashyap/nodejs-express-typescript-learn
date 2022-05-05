@@ -9,13 +9,16 @@ const auth = async (req, res, next) => {
 
     const user: any = await User.findOne({ _id: data._id, token })
 
+    console.log('user',user)
+    console.log('token',token)
+
     if (!user) throw new Error()
     req.user = user
     req.token = token
     next()
   } catch (error) {
     res.status(401).send({
-      error: 'Not authorized to access this resource',
+      error: error.message,
     })
   }
 }

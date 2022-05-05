@@ -73,16 +73,17 @@ userSchema.methods.generateAuthToken = async function () {
   }
 
   const config: any = {
-    expiresIn: process.env.TOKEN_LIFE,
+    expiresIn: process.env.JWT_LIFE,
     tokenSecret: process.env.JWT_SECRET,
     refreshTokenSecret: process.env.REFRESH_JWT_SECRET,
     refreshTokenLife: process.env.REFRESH_JWT_LIFE,
   }
+
   const token = jwt.sign(
     userData,
     config.tokenSecret,
     {
-      expiresIn: process.env.JWT_LIFE,
+      expiresIn: config.expiresIn,
     },
   )
 

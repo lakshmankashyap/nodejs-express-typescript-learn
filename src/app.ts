@@ -30,36 +30,24 @@ app.use(morgan('tiny'))
 
 const swaggerJsDocOptions = {
   definition: {
-    openapi: '3.0.0',
+    swagger: '2.0',
     info: {
-      title: 'Brainy A15 - API Boilerplate',
+      title: 'API Boilerplate',
       version: '0.0.1',
-      description:
-        'This is a REST API application made with Express. It retrieves data from mongo database (local or cloud).',
-      license: {
-        name: 'Licensed Under MIT',
-        url: 'https://spdx.org/licenses/MIT.html',
-      },
-      contact: {
-        name: 'Brainy (W.Guilherme)',
-        url: 'https://brainyresults.com',
-      },
     },
-
+    basePath:'/api/v1',
   },
   apis: ['./src/routes/**/**.ts'], // files containing annotations as above
 }
 
-const swaggerOptions = {
-  // explorer: true,
-}
-
-const swaggerDocs = swaggerJsDoc(swaggerJsDocOptions)
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, swaggerOptions))
 
 app.use(limiter)
 
-app.use(routes)
+/* initialise API routes */
+app.use('/api/v1', routes);
+
+const swaggerDocs = swaggerJsDoc(swaggerJsDocOptions)
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 export default app
